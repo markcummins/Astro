@@ -12,13 +12,13 @@ jobs:
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh/
-          echo "$SSH_KEY" > ~/.ssh/app.key
-          chmod 600 ~/.ssh/app.key
+          echo "$SSH_KEY" > ~/.ssh/production.key
+          chmod 600 ~/.ssh/production.key
           cat >>~/.ssh/config <<END
-          Host staging
+          Host production
             HostName $SSH_HOST
             User $SSH_USER
-            IdentityFile ~/.ssh/app.key
+            IdentityFile ~/.ssh/production.key
             StrictHostKeyChecking no
           END
         env:
@@ -27,4 +27,4 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
 
       - name: Test
-        run: ssh app 'touch /home/git.txt'
+        run: ssh production 'touch /home/git.txt'
